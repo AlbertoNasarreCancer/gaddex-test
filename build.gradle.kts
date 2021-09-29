@@ -13,8 +13,11 @@ java.sourceCompatibility = JavaVersion.VERSION_11
 
 repositories {
 	mavenCentral()
+	google()
+	jcenter()
 	maven { url = uri("https://repo.spring.io/milestone") }
 	maven { url = uri("https://repo.spring.io/snapshot") }
+	maven { url = uri("https://maven.google.com") }
 }
 
 dependencies {
@@ -22,6 +25,8 @@ dependencies {
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+	implementation("androidx.room:room-runtime:2.2.2")
+	annotationProcessor ("androidx.room:room-compiler:2.2.2")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("io.mockk:mockk:1.10.4")
 }

@@ -4,13 +4,14 @@ import com.example.demo.datasource.EventDataSource
 import com.example.demo.model.Event
 import org.springframework.stereotype.Repository
 import java.lang.IllegalArgumentException
+import java.time.LocalDate
 
 @Repository
 class MockEventDataSource : EventDataSource {
 
     val events = mutableListOf(
-            Event(Id = 1,Title = "test",Description = "descriptivism1",Date="01-01-2019",Location=1.0),
-            Event(Id = 2,Title = "test2",Description = "descriptivism2",Date="01-01-2020",Location=2.0)
+            Event(Id = 1,"test",Description = "descriptivism1",Date= LocalDate.parse("2018-12-12"),Location=ArrayList<Double>(2)),
+            Event(Id = 2,Title = "test2",Description = "descriptivism2",Date=LocalDate.parse("2019-12-12"),Location=ArrayList<Double>(2))
     )
 
     override fun retrieveEvents(): Collection<Event> = events
