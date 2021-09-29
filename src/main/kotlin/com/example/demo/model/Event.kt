@@ -2,6 +2,7 @@ package com.example.demo.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import org.springframework.web.multipart.MultipartFile
 import java.time.LocalDate
 import java.util.*
 import kotlin.collections.ArrayList
@@ -13,7 +14,8 @@ data class Event (
         val Title: String,
         val Description: String,
         val Date: LocalDate,
-        val Location: ArrayList<Double>
+        val Location: ArrayList<Double>,
+        // val Image: MultipartFile
 
         )
 /*

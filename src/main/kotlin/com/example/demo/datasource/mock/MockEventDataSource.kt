@@ -3,12 +3,14 @@ package com.example.demo.datasource.mock
 import com.example.demo.datasource.EventDataSource
 import com.example.demo.model.Event
 import org.springframework.stereotype.Repository
+import org.springframework.web.multipart.MultipartFile
 import java.lang.IllegalArgumentException
 import java.time.LocalDate
 
 @Repository
 class MockEventDataSource : EventDataSource {
 
+    // val file: MultipartFile = null
     val events = mutableListOf(
             Event(Id = 1,"test",Description = "descriptivism1",Date= LocalDate.parse("2018-12-12"),Location=ArrayList<Double>(2)),
             Event(Id = 2,Title = "test2",Description = "descriptivism2",Date=LocalDate.parse("2019-12-12"),Location=ArrayList<Double>(2))
@@ -37,7 +39,7 @@ class MockEventDataSource : EventDataSource {
         events.remove(currentEvent)
         events.add(event)
 
-        return currentEvent
+        return event
     }
 
     override fun deleteBank(id: Int) {
