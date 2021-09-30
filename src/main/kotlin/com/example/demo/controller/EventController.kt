@@ -1,16 +1,24 @@
 package com.example.demo.controller
 
+import com.example.demo.datasource.EventRepo
 import com.example.demo.model.Event
 import com.example.demo.service.EventService
+import com.example.demo.service.EventServiceImage
+import org.apache.commons.lang3.ObjectUtils
 import org.springframework.boot.autoconfigure.data.jpa.JpaRepositoriesAutoConfiguration
+import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
+import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Repository
 import org.springframework.web.bind.annotation.*
+import org.springframework.web.multipart.MultipartFile
+import org.springframework.web.util.UriComponentsBuilder
+import java.net.URI
 
 @RestController
 @RequestMapping("/api/events")
-class EventController(private val service: EventService) {
+class EventController(private val service: EventService,private val serviceImage: EventServiceImage, private val eventrepository : EventRepo) {
 
 
     @ExceptionHandler(NoSuchElementException::class)
@@ -36,5 +44,59 @@ class EventController(private val service: EventService) {
 
     @DeleteMapping("/{id}")
     fun deleteEvent(@PathVariable id: Int): Unit = service.deleteEvent(id)
+
+    @PostMapping(value= ["/image/{id}"], consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
+    fun setProfilePicture(@PathVariable("id") id: Long, @RequestParam file: MultipartFile): ResponseEntity<Void>{
+        return try {
+            serviceImage.setProfilePicture(id, file)
+            ResponseEntity
+                    .created(URI("/image/{id}"))
+                    .build()
+        } catch(error: NoSuchElementException){
+            ResponseEntity
+                    .notFound()
+                    .build()
+        }
+    }
+
+    @GetMapping("/image/{id}")
+    fun getProfilePicture(@PathVariable("id") id: Long): ResponseEntity<Any>{
+
+        return try {
+            val image: ByteArray = serviceImage.getProfilePicture(id)
+
+            ResponseEntity.ok()
+                    .contentType(MediaType.parseMediaType(MediaType.IMAGE_JPEG_VALUE))
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"${System.currentTimeMillis()}\"")
+                    .body(image)
+
+        } catch(error: NoSuchElementException){
+            ResponseEntity
+                    .notFound()
+                    .build()
+        }
+
+    }
+
+    @GetMapping("/events")
+    fun fetchGadgets(): ResponseEntity<List<Event>> {
+        val events = eventrepository.findAll()
+        if (events.isEmpty()) {
+            return ResponseEntity<List<Event>>(HttpStatus.NO_CONTENT)
+        }
+        return ResponseEntity<List<Event>>(events, HttpStatus.OK)
+    }
+
+    @PostMapping("/events")
+    fun addNewGadget(@RequestBody event: Event, uri: UriComponentsBuilder): ResponseEntity<Event> {
+        val persistedGadget = eventrepository.save(event)
+        if (ObjectUtils.isEmpty(persistedGadget)) {
+            return ResponseEntity<Event>(HttpStatus.BAD_REQUEST)
+        }
+        val headers = HttpHeaders()
+        headers.setLocation(uri.path("/events/{id}").buildAndExpand(event.Id).toUri());
+        return ResponseEntity(headers, HttpStatus.CREATED)
+    }
+
 }
 

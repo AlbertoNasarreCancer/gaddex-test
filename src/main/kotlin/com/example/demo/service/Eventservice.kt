@@ -1,8 +1,10 @@
 package com.example.demo.service
 
 import com.example.demo.datasource.EventDataSource
+import com.example.demo.datasource.EventRepo
 import com.example.demo.model.Event
 import org.springframework.stereotype.Service
+import org.springframework.web.multipart.MultipartFile
 
 @Service
 class EventService(private val datasource: EventDataSource) {
@@ -13,3 +15,4 @@ class EventService(private val datasource: EventDataSource) {
     fun updateEvent(event: Event): Event = datasource.updateEvent(event)
     fun deleteEvent(id: Int): Unit = datasource.deleteBank(id)
 }
+

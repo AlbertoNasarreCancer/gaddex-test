@@ -1,25 +1,29 @@
 package com.example.demo.model
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
-import org.springframework.web.multipart.MultipartFile
+
+import lombok.AllArgsConstructor
 import java.time.LocalDate
-import java.util.*
 import javax.persistence.*
-import kotlin.collections.ArrayList
 
 @Entity
+@Table
+@AllArgsConstructor
 data class Event (
 
         @Id
-        @GeneratedValue(strategy = GenerationType.AUTO)
+        @GeneratedValue(strategy = GenerationType.SEQUENCE)
         val Id: Int,
+        @Column
         val Title: String,
+        @Column
         val Description: String,
+        @Column
         val Date: LocalDate,
+        @Column
         val Location: ArrayList<Double>,
-
-        val Image: ByteArray
+        @Lob
+        @Column
+        var Image: ByteArray
 
         )
 /*
