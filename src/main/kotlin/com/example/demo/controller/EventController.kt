@@ -46,7 +46,7 @@ class EventController(private val service: EventService,private val serviceImage
     fun deleteEvent(@PathVariable id: Int): Unit = service.deleteEvent(id)
 
     @PostMapping(value= ["/image/{id}"], consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
-    fun setProfilePicture(@PathVariable("id") id: Long, @RequestParam file: MultipartFile): ResponseEntity<Void>{
+    fun setProfilePicture(@PathVariable("id") id: Int, @RequestParam file: MultipartFile): ResponseEntity<Void>{
         return try {
             serviceImage.setProfilePicture(id, file)
             ResponseEntity
@@ -60,10 +60,10 @@ class EventController(private val service: EventService,private val serviceImage
     }
 
     @GetMapping("/image/{id}")
-    fun getProfilePicture(@PathVariable("id") id: Long): ResponseEntity<Any>{
+    fun getProfilePicture(@PathVariable("id") id: Int): ResponseEntity<Any>{
 
         return try {
-            val image: ByteArray = ByteArray(0)
+            val image: ByteArray = serviceImage.getProfilePicture(id)
 
             ResponseEntity.ok()
                     .contentType(MediaType.parseMediaType(MediaType.IMAGE_JPEG_VALUE))
