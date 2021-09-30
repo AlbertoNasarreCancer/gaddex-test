@@ -6,26 +6,10 @@ import java.time.LocalDate
 import javax.persistence.*
 
 @Entity
-@Table
-@AllArgsConstructor
-data class Event (
+class Event(var Title: String? = null, var Description: String? = null, @Id @GeneratedValue(strategy = GenerationType.SEQUENCE) var Id: Int = 1){
 
-        @Id
-        @GeneratedValue(strategy = GenerationType.SEQUENCE)
-        val Id: Int,
-        @Column
-        val Title: String,
-        @Column
-        val Description: String,
-        @Column
-        val Date: LocalDate,
-        @Column
-        val Location: ArrayList<Double>,
-        @Lob
-        @Column
-        var Image: ByteArray
 
-        )
+}
 /*
 {
 

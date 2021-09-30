@@ -63,7 +63,7 @@ class EventController(private val service: EventService,private val serviceImage
     fun getProfilePicture(@PathVariable("id") id: Long): ResponseEntity<Any>{
 
         return try {
-            val image: ByteArray = serviceImage.getProfilePicture(id)
+            val image: ByteArray = ByteArray(0)
 
             ResponseEntity.ok()
                     .contentType(MediaType.parseMediaType(MediaType.IMAGE_JPEG_VALUE))

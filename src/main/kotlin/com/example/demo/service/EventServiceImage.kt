@@ -10,13 +10,10 @@ class EventServiceImage(private val eventRepo: EventRepo) {
 
     fun setProfilePicture(id: Long, file: MultipartFile){
         val event : Event = eventRepo.findById(id).orElseThrow()
-        event.Image = file.bytes
+
         eventRepo.save(event)
     }
 
-    fun getProfilePicture(id: Long): ByteArray{
-        val event: Event = eventRepo.findById(id).orElseThrow()
-        return event.Image
-    }
+
 
 }
