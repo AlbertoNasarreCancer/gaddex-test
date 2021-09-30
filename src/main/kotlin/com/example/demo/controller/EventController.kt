@@ -79,7 +79,7 @@ class EventController(private val service: EventService,private val serviceImage
     }
 
     @GetMapping("/events")
-    fun fetchGadgets(): ResponseEntity<List<Event>> {
+    fun fetchEvents(): ResponseEntity<List<Event>> {
         val events = eventrepository.findAll()
         if (events.isEmpty()) {
             return ResponseEntity<List<Event>>(HttpStatus.NO_CONTENT)
@@ -87,8 +87,17 @@ class EventController(private val service: EventService,private val serviceImage
         return ResponseEntity<List<Event>>(events, HttpStatus.OK)
     }
 
+    @GetMapping("/events/{id}")
+    fun fetchEventById(@PathVariable("id") id: Int): ResponseEntity<Event> {
+        val gadget = eventrepository.findById(id)
+        if (gadget.isPresent) {
+            return ResponseEntity<Event>(gadget.get(), HttpStatus.OK)
+        }
+        return ResponseEntity<Event>(HttpStatus.NOT_FOUND)
+    }
+
     @PostMapping("/events")
-    fun addNewGadget(@RequestBody event: Event, uri: UriComponentsBuilder): ResponseEntity<Event> {
+    fun addNewEvent(@RequestBody event: Event, uri: UriComponentsBuilder): ResponseEntity<Event> {
         val persistedGadget = eventrepository.save(event)
         if (ObjectUtils.isEmpty(persistedGadget)) {
             return ResponseEntity<Event>(HttpStatus.BAD_REQUEST)
@@ -96,6 +105,31 @@ class EventController(private val service: EventService,private val serviceImage
         val headers = HttpHeaders()
         headers.setLocation(uri.path("/events/{id}").buildAndExpand(event.Id).toUri());
         return ResponseEntity(headers, HttpStatus.CREATED)
+    }
+
+    @PutMapping("/events/{id}")
+    fun updateEventtById(@PathVariable("id") id: Int, @RequestBody event: Event): ResponseEntity<Event> {
+        return eventrepository.findById(id).map {
+            eventDetails ->
+            val updatedEvent: Event = eventDetails.copy(
+                    Title = event.Title,
+                    Date = event.Date,
+                    Location = event.Location,
+                    Image = event.Image,
+                    Description = event.Description
+            )
+            ResponseEntity(eventrepository.save(updatedEvent), HttpStatus.OK)
+        }.orElse(ResponseEntity<Event>(HttpStatus.INTERNAL_SERVER_ERROR))
+    }
+
+    @DeleteMapping("/events/{id}")
+    fun removeEventById(@PathVariable("id") id: Int): ResponseEntity<Void> {
+        val gadget = eventrepository.findById(id)
+        if (gadget.isPresent) {
+            eventrepository.deleteById(id)
+            return ResponseEntity<Void>(HttpStatus.NO_CONTENT)
+        }
+        return ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR)
     }
 
 }
