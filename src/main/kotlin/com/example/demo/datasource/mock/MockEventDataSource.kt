@@ -12,8 +12,8 @@ class MockEventDataSource : EventDataSource {
 
     // val file: MultipartFile = null
     val events = mutableListOf(
-            Event(Id = 1,Title="test",Description = "descriptivism1"),
-            Event(Id = 2,Title = "test2",Description = "descriptivism2")
+            Event(Id = 1,Title="test",Description = "descriptivism1",Date= LocalDate.parse("2018-12-12"),Location=ArrayList<Double>(2),Image=ByteArray(1)),
+            Event(Id = 2,Title = "test2",Description = "descriptivism2",Date= LocalDate.parse("2018-12-12"),Location=ArrayList<Double>(2),Image=ByteArray(1))
     )
 
     override fun retrieveEvents(): Collection<Event> = events
