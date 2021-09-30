@@ -11,6 +11,9 @@ import java.time.LocalDate
 class MockEventDataSource : EventDataSource {
 
     // val file: MultipartFile = null
+
+    // val db = Room
+
     val events = mutableListOf(
             Event(Id = 1,"test",Description = "descriptivism1",Date= LocalDate.parse("2018-12-12"),Location=ArrayList<Double>(2)),
             Event(Id = 2,Title = "test2",Description = "descriptivism2",Date=LocalDate.parse("2019-12-12"),Location=ArrayList<Double>(2))
