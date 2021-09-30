@@ -4,6 +4,7 @@ import com.example.demo.datasource.EventRepo
 import com.example.demo.model.Event
 import com.example.demo.service.EventService
 import com.example.demo.service.EventServiceImage
+import com.example.demo.service.NewEventService
 import org.apache.commons.lang3.ObjectUtils
 import org.springframework.boot.autoconfigure.data.jpa.JpaRepositoriesAutoConfiguration
 import org.springframework.http.HttpHeaders
@@ -18,7 +19,7 @@ import java.net.URI
 
 @RestController
 @RequestMapping("/api/events")
-class EventController(private val service: EventService,private val serviceImage: EventServiceImage, private val eventrepository : EventRepo) {
+class EventController(private val service: EventService,private val serviceImage: EventServiceImage, private val eventrepository : EventRepo, private val newservice: NewEventService) {
 
 
     @ExceptionHandler(NoSuchElementException::class)
@@ -79,58 +80,18 @@ class EventController(private val service: EventService,private val serviceImage
     }
 
     @GetMapping("/events")
-    fun fetchEvents(): ResponseEntity<List<Event>> {
-        val events = eventrepository.findAll()
-        if (events.isEmpty()) {
-            return ResponseEntity<List<Event>>(HttpStatus.NO_CONTENT)
-        }
-        return ResponseEntity<List<Event>>(events, HttpStatus.OK)
-    }
+    fun fetchEvents(): ResponseEntity<List<Event>> = newservice.getEvents()
 
     @GetMapping("/events/{id}")
-    fun fetchEventById(@PathVariable("id") id: Int): ResponseEntity<Event> {
-        val gadget = eventrepository.findById(id)
-        if (gadget.isPresent) {
-            return ResponseEntity<Event>(gadget.get(), HttpStatus.OK)
-        }
-        return ResponseEntity<Event>(HttpStatus.NOT_FOUND)
-    }
+    fun fetchEventById(@PathVariable("id") id: Int): ResponseEntity<Event> = newservice.getEvent(id)
 
     @PostMapping("/events")
-    fun addNewEvent(@RequestBody event: Event, uri: UriComponentsBuilder): ResponseEntity<Event> {
-        val persistedGadget = eventrepository.save(event)
-        if (ObjectUtils.isEmpty(persistedGadget)) {
-            return ResponseEntity<Event>(HttpStatus.BAD_REQUEST)
-        }
-        val headers = HttpHeaders()
-        headers.setLocation(uri.path("/events/{id}").buildAndExpand(event.Id).toUri());
-        return ResponseEntity(headers, HttpStatus.CREATED)
-    }
+    fun addNewEvent(@RequestBody event: Event, uri: UriComponentsBuilder): ResponseEntity<Event> = newservice.addEvent(event,uri)
 
     @PutMapping("/events/{id}")
-    fun updateEventtById(@PathVariable("id") id: Int, @RequestBody event: Event): ResponseEntity<Event> {
-        return eventrepository.findById(id).map {
-            eventDetails ->
-            val updatedEvent: Event = eventDetails.copy(
-                    Title = event.Title,
-                    Date = event.Date,
-                    Location = event.Location,
-                    Image = event.Image,
-                    Description = event.Description
-            )
-            ResponseEntity(eventrepository.save(updatedEvent), HttpStatus.OK)
-        }.orElse(ResponseEntity<Event>(HttpStatus.INTERNAL_SERVER_ERROR))
-    }
-
+    fun updateEventtById(@PathVariable("id") id: Int, @RequestBody event: Event): ResponseEntity<Event> = newservice.updateEvent(event,id)
     @DeleteMapping("/events/{id}")
-    fun removeEventById(@PathVariable("id") id: Int): ResponseEntity<Void> {
-        val gadget = eventrepository.findById(id)
-        if (gadget.isPresent) {
-            eventrepository.deleteById(id)
-            return ResponseEntity<Void>(HttpStatus.NO_CONTENT)
-        }
-        return ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR)
-    }
+    fun removeEventById(@PathVariable("id") id: Int): ResponseEntity<Void> = newservice.deleteEvent(id)
 
 }
 
