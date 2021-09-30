@@ -1,6 +1,5 @@
 package com.example.demo.service
 
-import com.example.demo.datasource.EventDataSource
 import io.mockk.mockk
 import io.mockk.verify
 import org.junit.jupiter.api.Assertions.*

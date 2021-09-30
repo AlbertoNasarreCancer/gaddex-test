@@ -1,7 +1,6 @@
 package com.example.demo.service
 
 import com.example.demo.datasource.EventRepo
-import com.example.demo.datasource.NewEventDataSource
 import com.example.demo.model.Event
 import org.apache.commons.lang3.ObjectUtils
 import org.springframework.http.HttpHeaders
@@ -11,7 +10,7 @@ import org.springframework.stereotype.Service
 import org.springframework.web.util.UriComponentsBuilder
 
 @Service
-class NewEventService(private val datasource: NewEventDataSource, private val eventrepository : EventRepo) {
+class NewEventService(private val eventrepository : EventRepo) {
 
     fun getEvents(): ResponseEntity<List<Event>> {
         val events = eventrepository.findAll()
