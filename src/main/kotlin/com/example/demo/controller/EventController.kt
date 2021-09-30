@@ -2,8 +2,10 @@ package com.example.demo.controller
 
 import com.example.demo.model.Event
 import com.example.demo.service.EventService
+import org.springframework.boot.autoconfigure.data.jpa.JpaRepositoriesAutoConfiguration
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.stereotype.Repository
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -35,3 +37,4 @@ class EventController(private val service: EventService) {
     @DeleteMapping("/{id}")
     fun deleteEvent(@PathVariable id: Int): Unit = service.deleteEvent(id)
 }
+
