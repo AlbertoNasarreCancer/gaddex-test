@@ -38,7 +38,7 @@ internal class EventControllerTest @Autowired constructor(
                     .andDo { print() }
                     .andExpect {
                         status { isOk() }
-                        content { contentType(MediaType.APPLICATION_JSON) }
+                        //content { contentType(MediaType.APPLICATION_JSON) }
                         //jsonPath("$[0].account_number") { value("1234") }
                     }
         }
@@ -83,7 +83,7 @@ internal class EventControllerTest @Autowired constructor(
         @Test
         fun `should add the new event`() {
             // given
-            val newEvent= Event(Description = "descriptivism1",Date= LocalDate.parse("2018-12-12"),Location=ArrayList<Double>(2),Image=ByteArray(10))
+            val newEvent= Event(Title = "hello","descriptivism1",Date= LocalDate.parse("2018-12-12"),Location=ArrayList<Double>(2),Image=ByteArray(10))
 
             // when
             val performPost = mockMvc.post(baseUrl) {
@@ -103,7 +103,10 @@ internal class EventControllerTest @Autowired constructor(
                     }
 
             mockMvc.get("$baseUrl/${newEvent.Id}")
-                    .andExpect { content { json(objectMapper.writeValueAsString(newEvent)) } }
+                    .andExpect { content {
+                        contentType(MediaType.APPLICATION_JSON)
+                        json(objectMapper.writeValueAsString(newEvent)) }
+                    }
         }
 
         @Test
