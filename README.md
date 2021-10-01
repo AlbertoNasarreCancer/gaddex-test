@@ -16,6 +16,19 @@ docker run -p 8080:8080 springio/gs-spring-boot-gaddex
 
 
 -----
+Endpoints:
+GET
+(for get all)
+http://localhost:8080/api/events/events/
+(for get just one)
+http://localhost:8080/api/events/events/{id}
+POST
+http://localhost:8080/api/events/events/
+PUT
+http://localhost:8080/api/events/events/{id}
+DELETE
+http://localhost:8080/api/events/events/{id}
+
 Example of json to post:
 
     {
