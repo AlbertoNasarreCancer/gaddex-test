@@ -24,15 +24,15 @@ internal class EventControllerTest @Autowired constructor(
         val objectMapper: ObjectMapper
 ) {
 
-    val baseUrl = "http://localhost:8080/api/events/events/"
+    val baseUrl = "http://localhost:8080/api/events/"
 
     @Nested
-    @DisplayName("GET /api/banks/events/")
+    @DisplayName("GET /api/events/")
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
     inner class GetEvents {
 
         @Test
-        fun `should return all banks`() {
+        fun `should return all events`() {
             // when/then
             mockMvc.get(baseUrl)
                     .andDo { print() }
@@ -45,7 +45,7 @@ internal class EventControllerTest @Autowired constructor(
     }
 
     @Nested
-    @DisplayName("GET /api/events/events/{id}")
+    @DisplayName("GET /api/events/{id}")
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
     inner class GetEvent {
 
@@ -76,7 +76,7 @@ internal class EventControllerTest @Autowired constructor(
     }
 
     @Nested
-    @DisplayName("POST /api/api/events")
+    @DisplayName("POST /api/events")
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
     inner class PostNewEvent {
 
@@ -109,12 +109,12 @@ internal class EventControllerTest @Autowired constructor(
         @Test
         fun `should return BAD REQUEST if event with given account number already exists`() {
             // given
-            val invalidBank = Event(Description = "descriptivism1",Date= LocalDate.parse("2018-12-12"),Location=ArrayList<Double>(2),Image=ByteArray(10))
+            val invalidEvent = Event(Description = "descriptivism1",Date= LocalDate.parse("2018-12-12"),Location=ArrayList<Double>(2),Image=ByteArray(10))
 
             // when
             val performPost = mockMvc.post(baseUrl) {
                 contentType = MediaType.APPLICATION_JSON
-                content = objectMapper.writeValueAsString(invalidBank)
+                content = objectMapper.writeValueAsString(invalidEvent)
             }
 
             // then

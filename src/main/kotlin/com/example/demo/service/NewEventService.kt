@@ -21,9 +21,9 @@ class NewEventService(private val eventrepository : EventRepo) {
     }
     fun getEvent(Id: Int): ResponseEntity<Event> {
 
-            val gadget = eventrepository.findById(Id)
-            if (gadget.isPresent) {
-                return ResponseEntity<Event>(gadget.get(), HttpStatus.OK)
+            val event = eventrepository.findById(Id)
+            if (event.isPresent) {
+                return ResponseEntity<Event>(event.get(), HttpStatus.OK)
             }
             return ResponseEntity<Event>(HttpStatus.NOT_FOUND)
         }
@@ -31,8 +31,8 @@ class NewEventService(private val eventrepository : EventRepo) {
 
     fun addEvent(event: Event, uri: UriComponentsBuilder): ResponseEntity<Event> {
 
-        val persistedGadget = eventrepository.save(event)
-        if (ObjectUtils.isEmpty(persistedGadget)) {
+        val persistentEvent = eventrepository.save(event)
+        if (ObjectUtils.isEmpty(persistentEvent)) {
             return ResponseEntity<Event>(HttpStatus.BAD_REQUEST)
         }
         val headers = HttpHeaders()
@@ -58,8 +58,8 @@ class NewEventService(private val eventrepository : EventRepo) {
 
     }
     fun deleteEvent(id: Int): ResponseEntity<Void> {
-        val gadget = eventrepository.findById(id)
-        if (gadget.isPresent) {
+        val event = eventrepository.findById(id)
+        if (event.isPresent) {
             eventrepository.deleteById(id)
             return ResponseEntity<Void>(HttpStatus.NO_CONTENT)
         }

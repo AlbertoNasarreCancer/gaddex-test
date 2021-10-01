@@ -20,15 +20,15 @@ Endpoints:
 -
 - GET
 (for get all)
-http://localhost:8080/api/events/events/
+http://localhost:8080/api/events/
 (for get just one)
-http://localhost:8080/api/events/events/{id}
+http://localhost:8080/api/events/{id}
 - POST
-http://localhost:8080/api/events/events/
+http://localhost:8080/api/events/
 - PUT
-http://localhost:8080/api/events/events/{id}
+http://localhost:8080/api/events/{id}
 - DELETE
-http://localhost:8080/api/events/events/{id}
+http://localhost:8080/api/events/{id}
 
 Example of json to post:
 

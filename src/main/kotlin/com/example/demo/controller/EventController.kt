@@ -17,18 +17,18 @@ import java.net.URI
 class EventController(private val serviceImage: EventServiceImage, private val newservice: NewEventService) {
 
 
-    @GetMapping("/events")
+    @GetMapping
     fun fetchEvents(): ResponseEntity<List<Event>> = newservice.getEvents()
 
-    @GetMapping("/events/{id}")
+    @GetMapping("{id}")
     fun fetchEventById(@PathVariable("id") id: Int): ResponseEntity<Event> = newservice.getEvent(id)
 
-    @PostMapping("/events")
+    @PostMapping
     fun addNewEvent(@RequestBody event: Event, uri: UriComponentsBuilder): ResponseEntity<Event> = newservice.addEvent(event,uri)
 
-    @PutMapping("/events/{id}")
+    @PutMapping("{id}")
     fun updateEventtById(@PathVariable("id") id: Int, @RequestBody event: Event): ResponseEntity<Event> = newservice.updateEvent(event,id)
-    @DeleteMapping("/events/{id}")
+    @DeleteMapping("{id}")
     fun removeEventById(@PathVariable("id") id: Int): ResponseEntity<Void> = newservice.deleteEvent(id)
 
     @PostMapping(value= ["/image/{id}"], consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
