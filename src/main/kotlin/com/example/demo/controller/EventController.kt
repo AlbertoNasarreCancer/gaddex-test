@@ -14,7 +14,7 @@ import java.net.URI
 
 @RestController
 @RequestMapping("/api/events")
-class EventController(private val serviceImage: EventServiceImage, private val eventrepository : EventRepo, private val newservice: NewEventService) {
+class EventController(private val serviceImage: EventServiceImage, private val newservice: NewEventService) {
 
 
     @GetMapping("/events")
